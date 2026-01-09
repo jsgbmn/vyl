@@ -2,7 +2,6 @@
 
 <div align="center">
 
-<img width="1742" height="960" alt="Frame 3" src="https://github.com/user-attachments/assets/039c2269-b8fd-435a-8a40-b0bd631e5947" />
 
   
   **A beautiful, modern Spotify web player built with Astro, React, and TypeScript**
