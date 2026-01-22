@@ -1,11 +1,14 @@
-// src/components/CallbackContent.tsx - CORRECTED
+// src/components/CallbackContent.tsx
 import { useEffect, useState } from "react";
 import MeshGradientBackground from "./MeshGradientBackground";
+import { MeshGradient } from "@paper-design/shaders-react";
 
 export default function CallbackContent() {
   const [status, setStatus] = useState("Connecting to Spotify...");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     exchangeCodeForToken();
   }, []);
 
@@ -29,7 +32,6 @@ export default function CallbackContent() {
     setStatus("Exchanging code for access token...");
 
     try {
-      // ✅ FIXED: Use server-side API endpoint (secure)
       const response = await fetch("/api/token", {
         method: "POST",
         headers: {
@@ -47,7 +49,6 @@ export default function CallbackContent() {
 
       setStatus("Success! Redirecting to music player...");
 
-      // Store tokens
       localStorage.setItem("spotify_access_token", data.access_token);
       if (data.refresh_token) {
         localStorage.setItem("spotify_refresh_token", data.refresh_token);
@@ -56,7 +57,6 @@ export default function CallbackContent() {
       const expiryTime = Date.now() + data.expires_in * 1000;
       localStorage.setItem("spotify_token_expiry", expiryTime.toString());
 
-      // Redirect to app
       setTimeout(() => (window.location.href = "/"), 1000);
     } catch (error: any) {
       console.error("Token exchange error:", error);
@@ -68,9 +68,32 @@ export default function CallbackContent() {
   return (
     <div className="min-h-screen relative text-white flex items-center justify-center overflow-hidden">
       <MeshGradientBackground albumImageUrl={undefined} />
-
       <div className="text-center max-w-md px-6 relative z-10">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#78ebff] mx-auto mb-6"></div>
+        {/* Spinning mesh gradient circle */}
+        {mounted && (
+          <div className="mx-auto mb-6 w-16 h-16 relative animate-spin">
+            <div className="absolute inset-0 rounded-full overflow-hidden">
+              <MeshGradient
+                width={64}
+                height={64}
+                colors={["#78ebff", "#a855f7", "#22c55e", "#ec4899"]}
+                distortion={0.6}
+                swirl={0.4}
+                grainMixer={0}
+                grainOverlay={0}
+                speed={1.2}
+              />
+            </div>
+            {/* Optional: inner shadow for depth */}
+            <div
+              className="absolute inset-0 rounded-full pointer-events-none"
+              style={{
+                boxShadow: "inset 0 0 12px rgba(0,0,0,.35)",
+              }}
+            />
+          </div>
+        )}
+
         <h2 className="text-2xl font-bold mb-2">Connecting to Spotify</h2>
         <p className="text-gray-400">{status}</p>
       </div>
