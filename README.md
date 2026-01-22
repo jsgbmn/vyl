@@ -1,6 +1,7 @@
 # Vyl - Your Personal Spotify Music Player
 
-<img width="1600" height="960" alt="Cover" src="https://github.com/user-attachments/assets/f9aef217-6f8a-4bb6-a69b-0b1b4f62f1ec" />
+<img width="1600" height="960" alt="vyl" src="https://github.com/user-attachments/assets/48f1a77b-2238-4437-8375-a02963a48077" />
+
 
 Transform your Spotify experience with a sleek, modern web player that puts beautiful design and seamless control at your fingertips.
 
